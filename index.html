@@ -82,23 +82,28 @@
 
     <!-- MAIN -->
     <div class="main"> 
-      <h1 class="text-film">Film</h1>
-      <div id="film"> </div>
-      <h1 class="text-serie">Serie Tv</h1>
-      <div id="serie"></div>
-      <h1>I film più popolari</h1>
-      <div id="film-popular"> </div>
-      <h1>Le serie Tv più popolari</h1>
-      <div id="serie-popular"> </div>
-     
+      <div class="container container-film">
+        <h1 class="text-film">Film</h1>
+        <div id="film"> </div>
+      </div>
+      <div class="container container-serie">
+        <h1 class="text-serie">Serie Tv</h1>
+        <div id="serie"></div>
+      </div>
+      <div class="container container-film-pop">
+        <h1>I film più popolari</h1>
+        <div id="film-popular"> </div>
+      </div>
+      <div class="container container-serie-pop">
+        <h1>Le serie Tv più popolari</h1>
+        <div id="serie-popular"> </div>
+      </div>
     </div>
 
     
     <script id="entry-template" type="text/x-handlebars-template">
-      <h1>{{type-text}}</h1>
-      <div class="card">
-        <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
-        <div class="info-card"></div>
+      <div class="card">{{{img}}}
+        <!-- <div class="info-card"></div> -->
         <!-- {{title}}
           <ul>
               <li>Titolo originale: {{original_title}}</li>

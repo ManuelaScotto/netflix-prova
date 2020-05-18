@@ -134,8 +134,9 @@ function callAjaxTv (url, api_key, val){
                 $('.text-serie').text('Non ci sono risultati per le serie cercate').addClass('active');
              } else if (data.total_results > 0){
                     printFilm(data.results, 'serie', 'serie'); 
-                    $('.text-serie').text('Serie Tv').addClass('active');    
-                }
+                    $('.text-serie').text('Serie Tv').addClass('active');  
+                    
+            }
         },
         error: function (richesta, stato, errori) {
             console.log('errore ' + errori); 
@@ -165,15 +166,24 @@ function printFilm(array, append, type) {
             console.log(title + 'serie');
         } else if (type == 'serie' && append == 'seriePop') {
             append = $('#serie-popular'); 
-        };
+        } ;
+
+        var image;
+        var urlBaseImage = 'https://image.tmdb.org/t/p/w185';
+        if(film.poster_path == null) {
+            image =  '<img src="img/unnamed.png" alt=""></img>';
+        } else {
+            image = '<img src="' + urlBaseImage + film.poster_path + '" alt=""></img>'
+        }
         var context = { 
             title: title,
-            img: film.poster_path,
+            img: image,
             original_title: original_title,
             lang: printFlag (film.original_language),
             vote_average: vote,
             star: printStar (vote)
          };
+
         var html = template(context);     
         append.append(html);       
     }
