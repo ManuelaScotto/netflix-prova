@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    var url = 'https://api.themoviedb.org/3/movie/popular';
+    var url = 'https://api.themoviedb.org/3';
     var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
     $.ajax ({
-        url: url,
+        url: url + '/movie/popular',
         method: 'GET',
         data: {
             'api_key': api_key,
@@ -10,23 +10,21 @@ $(document).ready(function() {
         },
         success: function (data) {
             console.log(data.results);
-           printFilmPop(data.results)
+           printFilm(data.results, 'filmPop', 'film');
         },
         error: function (richesta, stato, errori) {
             console.log('errore ' + errori);          
         }
     })  
-    var url = 'https://api.themoviedb.org/3/tv/popular';
-    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
     $.ajax ({
-        url: url,
+        url: url + '/tv/popular',
         method: 'GET',
         data: {
             'api_key': api_key,
             'language': 'it-IT'
         },
         success: function (data) {
-           printSeriesPop(data.results);
+           printFilm(data.results, 'seriePop', 'serie');
         },
         error: function (richesta, stato, errori) {
             console.log('errore ' + errori);          
@@ -79,8 +77,8 @@ $(document).ready(function() {
     // });
     $(document).on('keyup', 'input', function() {
         var thisTitle = $(this).val();
-        callAjax(thisTitle); 
-        callAjaxTv(thisTitle);   
+        callAjax(url, api_key, thisTitle); 
+        callAjaxTv(url, api_key, thisTitle);   
         clean(); 
         if(event.keyCode == 13 || event.wich == 13) {
             var thisTitle = $('input').val();
@@ -96,11 +94,9 @@ $(document).ready(function() {
 //--------------------FUNCTION-----------------------
 
 //call film
-function callAjax (val){
-    var url = 'https://api.themoviedb.org/3/search/movie';
-    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
+function callAjax (url, api_key, val){
     $.ajax ({
-        url: url,
+        url: url + '/search/movie',
         method: 'GET',
         data: {
             'api_key': api_key,
@@ -108,12 +104,13 @@ function callAjax (val){
             'language': 'it-IT'
         },
         success: function (data) {
-            // console.log(data.results);
-            if( data.total_results > 0 ) {
-                printFilm(data.results);                
-            } else {
-                printNoResult();
-            }
+            $('.text-film').removeClass('active');  
+            if (data.total_results < 1 ) {
+                $('.text-film').text('Non ci sono risultati per i film cercati').addClass('active');
+             } else if (data.total_results > 0){
+                    printFilm(data.results, 'film', 'film'); 
+                    $('.text-film').text('Film').addClass('active');    
+                }
         },
         error: function (richesta, stato, errori) {
             console.log('errore ' + errori);          
@@ -122,11 +119,9 @@ function callAjax (val){
 }
 
 //call serie TV
-function callAjaxTv (val){
-    var url = 'https://api.themoviedb.org/3/search/tv';
-    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
+function callAjaxTv (url, api_key, val){
     $.ajax ({
-        url: url,
+        url: url + '/search/tv',
         method: 'GET',
         data: {
             'api_key': api_key,
@@ -134,12 +129,13 @@ function callAjaxTv (val){
             'language': 'it-IT'
         },
         success: function (data) {
-            // console.log(data.results);
-            if( data.total_results > 0 ) {
-                printSeries(data.results);                
-            } else {
-                printNoResult();
-            }
+            $('.text-serie').removeClass('active');
+            if (data.total_results < 1 ) {
+                $('.text-serie').text('Non ci sono risultati per le serie cercate').addClass('active');
+             } else if (data.total_results > 0){
+                    printFilm(data.results, 'serie', 'serie'); 
+                    $('.text-serie').text('Serie Tv').addClass('active');    
+                }
         },
         error: function (richesta, stato, errori) {
             console.log('errore ' + errori); 
@@ -147,98 +143,51 @@ function callAjaxTv (val){
     })  
 }
 
-function printFilm(array) {
+function printFilm(array, append, type) {
     for (var i= 0; i < array.length; i++) {
         var source = $("#entry-template").html();
         var template = Handlebars.compile(source);    
         var film = array[i];
         var vote =  Math.ceil(film.vote_average)/2;
-        // console.log(film.title);     
+        var title;
+        var original_title; 
+        if (type == 'film' && append == 'film') {
+            title = film.title;
+            original_title= film.original_title;
+            append = $('#film');
+        } else if (type == 'film' && append == 'filmPop') {
+            append = $('#film-popular'); 
+        
+        } else if (type == 'serie' && append == 'serie') {
+            title = film.name;
+            original_title= film.original_name;
+            append = $('#serie');
+            console.log(title + 'serie');
+        } else if (type == 'serie' && append == 'seriePop') {
+            append = $('#serie-popular'); 
+        };
         var context = { 
-            title: film.title,
+            title: title,
             img: film.poster_path,
-            original_title: film.original_title,
+            original_title: original_title,
             lang: printFlag (film.original_language),
             vote_average: vote,
             star: printStar (vote)
          };
-        var html = template(context);
-        $('#film').append(html);        
+        var html = template(context);     
+        append.append(html);       
     }
 }
 
-function printFilmPop(array) {
-    for (var i= 0; i < array.length; i++) {
-        var source = $("#entry-template").html();
-        var template = Handlebars.compile(source);    
-        var film = array[i];
-        var vote =  Math.ceil(film.vote_average)/2;
-        // console.log(film.title);     
-        var context = { 
-            title: film.title,
-            img: film.poster_path,
-            original_title: film.original_title,
-            lang: printFlag (film.original_language),
-            vote_average: vote,
-            star: printStar (vote)
-         };
-        var html = template(context);
-        $('#film-popular').append(html);        
-    }
-}
-
-function printSeries(array) {
-    for (var i= 0; i < array.length; i++) {
-        var source = $("#entry-template").html();
-        var template = Handlebars.compile(source);    
-        var serie = array[i];
-        var vote =  Math.ceil(serie.vote_average)/2;    
-        var context = { 
-            title: serie.name,
-            img: serie.poster_path,
-            original_title: serie.original_name,
-            lang: printFlag (serie.original_language),
-            vote_average: vote,
-            star: printStar (vote)
-         };
-        var html = template(context);
-        $('#serie').append(html);        
-    }
-}
-function printSeriesPop(array) {
-    for (var i= 0; i < array.length; i++) {
-        var source = $("#entry-template").html();
-        var template = Handlebars.compile(source);    
-        var serie = array[i];
-        var vote =  Math.ceil(serie.vote_average)/2;    
-        var context = { 
-            title: serie.name,
-            img: serie.poster_path,
-            original_title: serie.original_name,
-            lang: printFlag (serie.original_language),
-            vote_average: vote,
-            star: printStar (vote)
-         };
-        var html = template(context);
-        $('#serie-popular').append(html);        
-    }
-}
-
-function printNoResult() {
-    var source = $("#no-result-template").html();
-    var template = Handlebars.compile(source);
-    var html = template();
-    $('#film').append(html); 
-}
 function clean () {
     // $('input').val('');
     $('#film').text('');
     $('#serie').text('');
 }
-function printStar (vote) {
+function printStar (num) {
     var star = '';
     for (var i = 1; i <= 5; i++) {
-        if( i <= vote ) {
+        if( i <= num ) {
             star += ' <i class="fas fa-star"></i>'; 
         }  else {
             star = star  + '<i class="far fa-star"></i>';
@@ -251,7 +200,12 @@ function printFlag (language) {
     var flags = ['de', 'en', 'es', 'fr', 'it', 'ja', 'ru'];
     for (var i = 0; i < flags.length; i++) {
         if (language == flags[i]) {
-            var flag = 'img/flag_' + language + '.png';
+            var flag = '<img class="flag" src="img/flag_' + language + '.png " alt="">';
         }
     } return flag;
+    // stesso metodo con .includes
+    if(flags.includes(language)) {
+        var flag = 'img/flag_' + language + '.png';
+    }
+    return flag;
 }

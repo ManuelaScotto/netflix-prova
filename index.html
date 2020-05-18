@@ -82,9 +82,9 @@
 
     <!-- MAIN -->
     <div class="main"> 
-      <h1></h1>
+      <h1 class="text-film">Film</h1>
       <div id="film"> </div>
-      <h1></h1>
+      <h1 class="text-serie">Serie Tv</h1>
       <div id="serie"></div>
       <h1>I film più popolari</h1>
       <div id="film-popular"> </div>
@@ -95,20 +95,22 @@
 
     
     <script id="entry-template" type="text/x-handlebars-template">
-        <div class="card">
-          <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
-          <div class="info-card"></div>
-          <!-- {{title}}
-            <ul>
-                <li>Titolo originale: {{original_title}}</li>
-                <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
-                <li>Lingua originale: <img class="flag" src="{{lang}}" alt=""></li>
-                <li>Voto: {{{star}}} </li> 
-            </ul> -->
-        </div>
-      </script>
-    <script id="no-result-template" type="text/x-handlebars-template">
-        <li>Non ci sono risultati</li>
-      </script>
+      <h1>{{type-text}}</h1>
+      <div class="card">
+        <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
+        <div class="info-card"></div>
+        <!-- {{title}}
+          <ul>
+              <li>Titolo originale: {{original_title}}</li>
+              <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
+              <li>Lingua originale: {{lang}} </li>
+              <li>Voto: {{{star}}} </li> 
+          </ul> -->
+      </div>
+    </script>
+    <!-- <script id="no-result-template" type="text/x-handlebars-template">
+        <p>Non ci sono risultati</p>
+      </script> -->
+
 </body>
 </html>

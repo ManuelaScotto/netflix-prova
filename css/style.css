@@ -191,13 +191,25 @@ ul.nav-sfoglia {
     margin-top: 70px;
 }
 
-/* #film li {
-    margin-left: 30px;
+.text-film,
+.text-serie {
+    display: none;
 }
+.text-film.active,
+.text-serie.active {
+    display: block;
+}
+
+p {
+    color: white;
+}
+ /* #film li {
+    margin-left: 30px;
+} */
 
 .flag {
     height: 16px;
-} */
+} 
 
 #film,
 #serie,
@@ -216,6 +228,7 @@ ul.nav-sfoglia {
     margin: 20px;
     height: 278px;
     width: 185px;
+    /* width: 342px; */
 }
 
 
