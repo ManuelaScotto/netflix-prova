@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FONTROBOTO -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- MYSTYLE -->
+    <link rel="stylesheet" href="css/style.css">
+      <!--FONTAWESOME -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+    <!-- JQUERY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- HANDLEBARS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js" integrity="sha256-ZafrO8ZXERYO794Tx1hPaAcdcXNZUNmXufXOSe0Hxj8=" crossorigin="anonymous"></script>
+    <!-- MYSCRIPT -->
+    <script src="js/script.js"></script>
+    <title>Netflix</title>
+</head>
+
+<body>
+    <div class="nav">
+
+      <!-- NAV-LEFT -->
+      <div class="nav-left">
+        <img src="img/logo.png" alt="logo">
+        <ul class="nav-menu">
+          <li><a href="" class="active">Home</a></li>
+          <li><a href="">Serie Tv</a></li>
+          <li><a href="">Film</a></li>
+          <li><a href="">Nuovi arrivi</a></li>
+          <li><a href="">La mia lista</a></li>
+        </ul>
+        <!-- SFOGLIA DROPDOWN -->
+        <ul class="nav-sfoglia">
+          <li class="parent-dropdown">
+            <a class="line-height" href="">Sfoglia</a><i class="fas fa-sort-down"></i>
+            <div class="dropdown">
+              <ul>
+                <li><a href="" class="active">Home</a></li>
+                <li><a href="">Serie Tv</a></li>
+                <li><a href="">Film</a></li>
+                <li><a href="">Nuovi arrivi</a></li>
+                <li><a href="">La mia lista</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>     
+      </div>
+
+      <!-- NAV-RIGHT -->
+      <div class="nav-right">
+        <div class="search">
+          <i class="icon-search fas fa-search"></i>
+          <input id="search" type="text" placeholder="Inserisci il titolo">
+        </div>
+        <!-- <i class="fas fa-search"></i> -->
+        <i class="fas fa-gift"></i>
+        <i class="fas fa-bell"></i>
+        <!-- NAV-RIGHT DROPDOWN -->
+        <div class="parent-dropdown">
+          <ul class="line-height">
+            <li>
+              <img  src="img\koala.png
+            " alt="" sizes="" srcset="">
+            </li>
+            <li><i class="fas fa-sort-down"></i></li>
+          </ul>
+          <div class="dropdown">
+            <ul>
+              <li><a href=""><img src="img/laptop.png" alt=""> Manuela</a></li>
+              <li><a href="">Gestisci i profili</a></li>
+              <div class="line"></div>
+              <li><a class="font-weight" href="">Account</a></li>
+              <li><a class="font-weight" href="">Centro Assistenza</a></li>
+              <li><a class="font-weight" href="">Esci da Netflix</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main"> 
+      <h1></h1>
+      <div id="film"> </div>
+      <h1></h1>
+      <div id="serie"></div>
+      <h1>I film più popolari</h1>
+      <div id="film-popular"> </div>
+      <h1>Le serie Tv più popolari</h1>
+      <div id="serie-popular"> </div>
+     
+    </div>
+
+    
+    <script id="entry-template" type="text/x-handlebars-template">
+        <div class="card">
+          <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
+          <div class="info-card"></div>
+          <!-- {{title}}
+            <ul>
+                <li>Titolo originale: {{original_title}}</li>
+                <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
+                <li>Lingua originale: <img class="flag" src="{{lang}}" alt=""></li>
+                <li>Voto: {{{star}}} </li> 
+            </ul> -->
+        </div>
+      </script>
+    <script id="no-result-template" type="text/x-handlebars-template">
+        <li>Non ci sono risultati</li>
+      </script>
+</body>
+</html>
