@@ -1,43 +1,4 @@
-$(document).ready(function() {
-    var url = 'https://api.themoviedb.org/3';
-    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
-    $.ajax ({
-        url: url + '/movie/popular',
-        method: 'GET',
-        data: {
-            'api_key': api_key,
-            'language': 'it-IT'
-        },
-        success: function (data) {
-           printFilm(data.results, 'filmPop', 'film');
-        },
-        error: function (richesta, stato, errori) {
-            console.log('errore ' + errori);          
-        }
-    })  
-    $.ajax ({
-        url: url + '/tv/popular',
-        method: 'GET',
-        data: {
-            'api_key': api_key,
-            'language': 'it-IT'
-        },
-        success: function (data) {
-           printFilm(data.results, 'seriePop', 'serie');
-        },
-        error: function (richesta, stato, errori) {
-            console.log('errore ' + errori);          
-        }
-    })  
-
-    //DROPDOWN
-    $('.parent-dropdown').mouseenter(function() {
-        $(this).children('.dropdown').addClass('active');
-    });
-    $('.parent-dropdown').mouseleave(function() {
-        $(this).children('.dropdown').removeClass('active');
-    });
-
+$(document).ready(function() { 
     //SEARCH ANIMATE
     var click = false;
     $('.icon-search').click(function() {
@@ -63,55 +24,72 @@ $(document).ready(function() {
         }   
     });
 
+    //VARIABILI
+    var url = 'https://api.themoviedb.org/3';
+    var urlFilmPop = url + '/movie/popular';
+    var urlSeriePop = url + '/tv/popular';
+    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
+    var urlFilm = url + '/search/movie';
+    var urlSerie = url + '/search/tv';
+
+    // FILM POPOLARI
+    callFilmPop (urlFilmPop, api_key, 'filmPop');
+    callFilmPop (urlSeriePop, api_key, 'seriePop');
+
     //SEARCH FILM
-    $(document).on('keyup', 'input', function() {
-        var thisTitle = $(this).val();
-        callAjax(url, api_key, thisTitle); 
-        callAjaxTv(url, api_key, thisTitle);   
-        clean(); 
-        if(event.keyCode == 13 || event.wich == 13) {
-            var thisTitle = $('input').val();
-            callAjax(thisTitle); 
-            callAjaxTv(thisTitle);   
-            clean();
-            $('input').val(''); 
-        }
+    $(document).on('keyup', 'input', function() {       
+    var thisTitle = $(this).val();
+    callMovie(urlFilm, api_key, thisTitle, film );
+    callMovie(urlSerie, api_key, thisTitle, serie );   
+    clean(); 
+    if(event.keyCode == 13 || event.wich == 13) {
+        var thisTitle = $('input').val();
+        callMovie(urlFilm, api_key, thisTitle, film );
+        callMovie(urlSerie, api_key, thisTitle, serie );  
+        clean();
+        $('input').val(''); 
+    } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
+        $('.text-serie').removeClass('active');
+        $('.text-film').removeClass('active');
+    }
     });
-  
+
+    //DROPDOWN
+    $('.parent-dropdown').mouseenter(function() {
+        $(this).children('.dropdown').addClass('active');
+    });
+    $('.parent-dropdown').mouseleave(function() {
+        $(this).children('.dropdown').removeClass('active');
+    });
 }); //fine document.ready
 
 
 //--------------------FUNCTION-----------------------
 
-//call film
-function callAjax (url, api_key, val){
+function callFilmPop (url, api_key, append) {
     $.ajax ({
-        url: url + '/search/movie',
+        url: url,
         method: 'GET',
         data: {
             'api_key': api_key,
-            'query': val,
             'language': 'it-IT'
         },
         success: function (data) {
-            $('.text-film').removeClass('active');  
-            if (data.total_results < 1 ) {
-                $('.text-film').text('Non ci sono risultati per i film cercati').addClass('active');
-             } else if (data.total_results > 0){
-                    printFilm(data.results, 'film', 'film'); 
-                    $('.text-film').text('Film').addClass('active');    
-                }
+            if (append == 'filmPop') {
+                printFilm(data.results, 'filmPop', 'film');
+            } else {
+                printFilm(data.results, 'seriePop', 'serie');
+            }
         },
         error: function (richesta, stato, errori) {
             console.log('errore ' + errori);          
         }
     })  
-}
+} 
 
-//call serie TV
-function callAjaxTv (url, api_key, val){
+function callMovie (url, api_key, val, text) {
     $.ajax ({
-        url: url + '/search/tv',
+        url: url ,
         method: 'GET',
         data: {
             'api_key': api_key,
@@ -119,17 +97,26 @@ function callAjaxTv (url, api_key, val){
             'language': 'it-IT'
         },
         success: function (data) {
-            $('.text-serie').removeClass('active');
-            if (data.total_results < 1 ) {
-                $('.text-serie').text('Non ci sono risultati per le serie cercate').addClass('active');
-             } else if (data.total_results > 0){
-                    printFilm(data.results, 'serie', 'serie'); 
-                    $('.text-serie').text('Serie Tv').addClass('active');  
-                    
+            if (text == film) {
+                $('.text-film').removeClass('active');  
+                if (data.total_results < 1 ) {
+                    $('.text-film').text('Non ci sono risultati per i film cercati').addClass('active');
+                 } else if (data.total_results > 0){
+                        printFilm(data.results, 'film', 'film'); 
+                        $('.text-film').text('Film').addClass('active');    
+                    }
+            } else if (text == serie) {
+                $('.text-serie').removeClass('active');
+                if (data.total_results < 1 ) {
+                    $('.text-serie').text('Non ci sono risultati per le serie cercate').addClass('active');
+                 } else if (data.total_results > 0){
+                        printFilm(data.results, 'serie', 'serie'); 
+                        $('.text-serie').text('Serie Tv').addClass('active');                         
+                }
             }
         },
         error: function (richesta, stato, errori) {
-            console.log('errore ' + errori); 
+            console.log('errore ' + errori);          
         }
     })  
 }
@@ -180,7 +167,6 @@ function printFilm(array, append, type) {
 }
 
 function clean () {
-    // $('input').val('');
     $('#film').text('');
     $('#serie').text('');
 }
