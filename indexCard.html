@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js" integrity="sha256-ZafrO8ZXERYO794Tx1hPaAcdcXNZUNmXufXOSe0Hxj8=" crossorigin="anonymous"></script>
     <!-- MYSCRIPT -->
     <script src="js/script.js"></script>
-    <title>Netflix</title>
+    <title>Netflix Specifiche</title>
 </head>
 
 <body>
@@ -23,9 +23,12 @@
 
       <!-- NAV-LEFT -->
       <div class="nav-left">
-        <img src="img/logo.png" alt="logo">
+        <a href="index.html">
+            <img src="img/logo.png" alt="logo">
+  
+          </a>
         <ul class="nav-menu">
-          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="" class="active">Home</a></li>
           <li><a href="">Serie Tv</a></li>
           <li><a href="">Film</a></li>
           <li><a href="">Nuovi arrivi</a></li>
@@ -82,40 +85,23 @@
 
     <!-- MAIN -->
     <div class="main"> 
-      <div class="container container-film">
-        <h1 class="text-film">Film</h1>
-        <div id="film"> </div>
-      </div>
-      <div class="container container-serie">
-        <h1 class="text-serie">Serie Tv</h1>
-        <div id="serie"></div>
-      </div>
-      <div class="container container-film-pop">
-        <h1>I film più popolari</h1>
-        <div id="film-popular"> </div>
-      </div>
-      <div class="container container-serie-pop">
-        <h1>Le serie Tv più popolari</h1>
-        <div id="serie-popular"> </div>
-      </div>
+      
     </div>
 
     
     <script id="entry-template" type="text/x-handlebars-template">
-          <div class="card">{{{img}}}</div>
-        <!-- <div class="info-card"></div> -->
-        <!-- {{title}}
+      <div class="card">{{{img}}}
+       
+        <div class="info-card"></div>
+        {{title}}
           <ul>
               <li>Titolo originale: {{original_title}}</li>
               <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
               <li>Lingua originale: {{lang}} </li>
               <li>Voto: {{{star}}} </li> 
-          </ul> -->
-    
+          </ul>
+      </div>
     </script>
-    <!-- <script id="no-result-template" type="text/x-handlebars-template">
-        <p>Non ci sono risultati</p>
-      </script> -->
 
 </body>
 </html>

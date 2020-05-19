@@ -9,12 +9,36 @@ $(document).ready(function() {
             'language': 'it-IT'
         },
         success: function (data) {
+            console.log(data.results);
            printFilm(data.results, 'filmPop', 'film');
+          
         },
         error: function (richesta, stato, errori) {
             console.log('errore ' + errori);          
         }
-    })  
+    }) ;
+    $(document).on('click', '.card', function() {
+        $.ajax ({
+            url: url + '/movie/popular',
+            method: 'GET',
+            data: {
+                'api_key': api_key,
+                'language': 'it-IT'
+            },
+            success: function (data) {
+                console.log(data.results);
+               printFilm(data.results, 'filmPop', 'film');
+              
+            },
+            error: function (richesta, stato, errori) {
+                console.log('errore ' + errori);          
+            }
+        }) ;
+            
+            
+             
+             
+    }); 
     $.ajax ({
         url: url + '/tv/popular',
         method: 'GET',
@@ -24,13 +48,12 @@ $(document).ready(function() {
         },
         success: function (data) {
            printFilm(data.results, 'seriePop', 'serie');
+         
         },
         error: function (richesta, stato, errori) {
             console.log('errore ' + errori);          
         }
     })  
-
-    //DROPDOWN
     $('.parent-dropdown').mouseenter(function() {
         $(this).children('.dropdown').addClass('active');
     });
@@ -38,7 +61,7 @@ $(document).ready(function() {
         $(this).children('.dropdown').removeClass('active');
     });
 
-    //SEARCH ANIMATE
+    //SEARCH
     var click = false;
     $('.icon-search').click(function() {
         if (click == false) {
@@ -61,9 +84,24 @@ $(document).ready(function() {
             $('#search').css('display', 'none');
             click = false;
         }   
-    });
+    })
 
-    //SEARCH FILM
+ 
+    // $('.button-search').click(function(){
+    //     var thisTitle = $('input').val();
+    //     console.log(thisTitle);
+    //     callAjax(thisTitle);   
+    //     callAjaxTv(thisTitle);
+    //     clean();    
+    // });
+    // $('input').keydown(function() {
+    //     if(event.keyCode == 13 || event.wich == 13) {
+    //         var thisTitle = $('input').val();
+    //         callAjax(thisTitle); 
+    //         callAjaxTv(thisTitle);   
+    //         clean(); 
+    //     }
+    // });
     $(document).on('keyup', 'input', function() {
         var thisTitle = $(this).val();
         callAjax(url, api_key, thisTitle); 
@@ -77,10 +115,9 @@ $(document).ready(function() {
             $('input').val(''); 
         }
     });
-  
+    
+    
 }); //fine document.ready
-
-
 //--------------------FUNCTION-----------------------
 
 //call film
@@ -161,9 +198,9 @@ function printFilm(array, append, type) {
         var image;
         var urlBaseImage = 'https://image.tmdb.org/t/p/w185';
         if(film.poster_path == null) {
-            image =  '<img src="img/unnamed.png" alt="'+ title + '"></img>';
+            image =  '<img src="img/unnamed.png" alt=""></img>';
         } else {
-            image = '<img src="' + urlBaseImage + film.poster_path + '" alt="'+ title + '"></img>';
+            image = '<img src="' + urlBaseImage + film.poster_path + '" alt=""></img>'
         }
         var context = { 
             title: title,
@@ -175,8 +212,13 @@ function printFilm(array, append, type) {
          };
 
         var html = template(context);     
-        append.append(html);       
+        append.append(html);   
     }
+            // $(document).on('click', '.card' ,function() {
+            //     window.location.href = "https://www.google.it/";
+            //     console.log('funciton');
+                
+            // })   
 }
 
 function clean () {
@@ -209,3 +251,4 @@ function printFlag (language) {
     }
     return flag;
 }
+
