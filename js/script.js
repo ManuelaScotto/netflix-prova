@@ -32,10 +32,11 @@ $(document).ready(function() {
     var urlFilm = url + '/search/movie';
     var urlSerie = url + '/search/tv';
 
+    
     // FILM POPOLARI
     callFilmPop (urlFilmPop, api_key, 'filmPop');
     callFilmPop (urlSeriePop, api_key, 'seriePop');
-
+    // callCast (urlCastFilm, api_key, 'filmPop' );
     //SEARCH FILM
     $(document).on('keyup', 'input', function() {       
     var thisTitle = $(this).val();
@@ -61,6 +62,7 @@ $(document).ready(function() {
     $('.parent-dropdown').mouseleave(function() {
         $(this).children('.dropdown').removeClass('active');
     });
+
 }); //fine document.ready
 
 
@@ -76,9 +78,10 @@ function callFilmPop (url, api_key, append) {
         },
         success: function (data) {
             if (append == 'filmPop') {
-                printFilm(data.results, 'filmPop', 'film');
+                printFilm(data.results, 'filmPop', 'film', api_key);
+           
             } else {
-                printFilm(data.results, 'seriePop', 'serie');
+                printFilm(data.results, 'seriePop', 'serie', api_key);
             }
         },
         error: function (richesta, stato, errori) {
@@ -102,7 +105,7 @@ function callMovie (url, api_key, val, text) {
                 if (data.total_results < 1 ) {
                     $('.text-film').text('Non ci sono risultati per i film cercati').addClass('active');
                  } else if (data.total_results > 0){
-                        printFilm(data.results, 'film', 'film'); 
+                        printFilm(data.results, 'film', 'film', api_key); 
                         $('.text-film').text('Film').addClass('active');    
                     }
             } else if (text == serie) {
@@ -110,7 +113,7 @@ function callMovie (url, api_key, val, text) {
                 if (data.total_results < 1 ) {
                     $('.text-serie').text('Non ci sono risultati per le serie cercate').addClass('active');
                  } else if (data.total_results > 0){
-                        printFilm(data.results, 'serie', 'serie'); 
+                        printFilm(data.results, 'serie', 'serie',url, api_key); 
                         $('.text-serie').text('Serie Tv').addClass('active');                         
                 }
             }
@@ -121,7 +124,7 @@ function callMovie (url, api_key, val, text) {
     })  
 }
 
-function printFilm(array, append, type) {
+function printFilm(array, append, type, api_key) {
     for (var i= 0; i < array.length; i++) {
         var source = $("#entry-template").html();
         var template = Handlebars.compile(source);    
@@ -129,21 +132,28 @@ function printFilm(array, append, type) {
         var vote =  Math.ceil(film.vote_average)/2;
         var title;
         var original_title; 
-        if (type == 'film' && append == 'film') {
+      
+        var id = film.id;
+        var urlCast =  'https://api.themoviedb.org/3/movie/' + id + '/credits';
+        // console.log(id);
+      
+        if (type == 'film') {
             title = film.title;
             original_title= film.original_title;
-            append = $('#film');
-        } else if (type == 'film' && append == 'filmPop') {
-            append = $('#film-popular'); 
-        
-        } else if (type == 'serie' && append == 'serie') {
+        } else if (type == 'serie') {
             title = film.name;
             original_title= film.original_name;
+        };
+
+        if (append == 'film') {
+            append = $('#film');
+        } else if (append == 'filmPop') {
+            append = $('#film-popular'); 
+        } else if (append == 'serie') {
             append = $('#serie');
-            console.log(title + 'serie');
-        } else if (type == 'serie' && append == 'seriePop') {
+        } else if (append == 'seriePop') {
             append = $('#serie-popular'); 
-        } ;
+        };
 
         var image;
         var urlBaseImage = 'https://image.tmdb.org/t/p/w185';
@@ -152,20 +162,63 @@ function printFilm(array, append, type) {
         } else {
             image = '<img src="' + urlBaseImage + film.poster_path + '" alt="'+ title + '"></img>';
         }
+   
         var context = { 
             title: title,
             img: image,
             original_title: original_title,
             lang: printFlag (film.original_language),
+            overview: film.overview,
             vote_average: vote,
-            star: printStar (vote)
+            star: printStar (vote),
+            cast: callCast (urlCast, api_key)
          };
 
+    
         var html = template(context);     
-        append.append(html);       
+        append.append(html); 
     }
 }
 
+function callCast (url, api_key) {
+    $.ajax ({
+        url: url,
+        method: 'GET',
+        data: {
+            'api_key': api_key,
+            'language': 'it-IT'
+        },
+        success: function (data) {
+            console.log(data.cast);
+            printCast (data.cast);
+
+        },
+        error: function (richesta, stato, errori) {
+            console.log('errore ' + errori);          
+        }
+
+    })
+}
+
+function printCast (array, append) {
+    for (var i= 0; i < 5; i++) {
+        var cast = array[i];              
+        var castName = cast.name;
+        console.log(castName);
+        
+
+        if (append == 'film') {
+            append = $('#film');
+        } else if (append == 'filmPop') {
+            append = $('#film-popular'); 
+        } else if (append == 'serie') {
+            append = $('#serie');
+        } else if (append == 'seriePop') {
+            append = $('#serie-popular'); 
+        }
+        } return castName;
+
+}
 function clean () {
     $('#film').text('');
     $('#serie').text('');
@@ -187,7 +240,7 @@ function printFlag (language) {
     for (var i = 0; i < flags.length; i++) {
         if (language == flags[i]) {
             var flag = '<img class="flag" src="img/flag_' + language + '.png " alt="">';
-        }
+        }           
     } return flag;
     // stesso metodo con .includes
     if(flags.includes(language)) {
@@ -195,3 +248,4 @@ function printFlag (language) {
     }
     return flag;
 }
+

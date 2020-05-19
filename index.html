@@ -102,20 +102,22 @@
 
     
     <script id="entry-template" type="text/x-handlebars-template">
-          <div class="card">{{{img}}}</div>
-        <!-- <div class="info-card"></div> -->
-        <!-- {{title}}
-          <ul>
-              <li>Titolo originale: {{original_title}}</li>
-              <img src="https://image.tmdb.org/t/p/w185/{{img}}" alt="">
-              <li>Lingua originale: {{lang}} </li>
-              <li>Voto: {{{star}}} </li> 
-          </ul> -->
-    
-    </script>
-    <!-- <script id="no-result-template" type="text/x-handlebars-template">
-        <p>Non ci sono risultati</p>
-      </script> -->
-
+      <div class="container-card">
+        <div class="card">{{{img}}}</div>
+        <div class="info-card">
+            <ul>
+              <li><strong>Titolo: </strong><small>{{title}}</small> </li>
+                <li><strong>Titolo originale: </strong><small>{{original_title}}</small> </li>
+                <li><strong>Lingua originale: </strong><small>{{{lang}}} </small></li>
+                <li><strong>Voto: </strong><small class="color-star">{{{star}}}</small> </li> 
+                <li><strong>Cast: </strong>{{cast}}</li>
+             </ul>
+             <div class="trama">
+               <p><strong>Trama: </strong><small>{{overview}}</small></p>
+             </div>
+         
+        </div>      
+      </div>        
+      </script>
 </body>
 </html>

@@ -190,9 +190,11 @@ ul.nav-sfoglia {
 .main {
     width: 100%;
     margin-top: 70px;
+    padding-bottom: 100px;
 }
 .container {
-    margin-left: 50px;
+    margin-left: 100px;
+    /* margin-right: 100px; */
 }
 .text-film,
 .text-serie {
@@ -214,6 +216,9 @@ p {
     height: 16px;
 } 
 
+.color-star {
+    color: rgb(253, 253, 94);
+}
 #film,
 #serie,
 #film-popular,
@@ -226,20 +231,62 @@ p {
     color: white;
 }
 
-.card { 
-    display: flex;
-    margin: 20px 5px;
+.container-card {
+    position: relative;
     transition: all 400ms ease-in-out;
+}
+.card {
+    display: flex;
+    margin: 20px 30px;
+   
+    color: white;
+    width: 185px; 
     /* width: 342px; */
 }
-.card:hover {
+.container-card:hover {
     border: 1px solid lavender;
-    transform: scale(1.4,1.4);
+    transform: scale(1.4, 1.4);
     z-index: 2;
+}
+
+.container-card:hover .info-card{
+    display: block;
 }
 .card img {
     /* height: 278px; */
     width: 185px; 
+}
+
+.info-card {
+    display: none;
+    max-height: 300px ;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    /* font-size: 500; */
+}
+
+
+.info-card li {
+    font-size: 18px; 
+    line-height: 1.6;
+}
+.info-card p > strong {
+    font-size: 18px; 
+}
+.info-card p {
+    font-size: 14px;   
+}
+
+
+.trama {
+    min-height: 170px;
+    max-height: 135px;
+    overflow-y: auto;
 }
 
 /* MEDIA QUERY */
