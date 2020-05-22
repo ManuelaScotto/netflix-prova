@@ -118,7 +118,6 @@ $(document).ready(function() {
     callMovie(urlFilm, api_key, thisTitle, film );
     callMovie(urlSerie, api_key, thisTitle, serie );  
     clean(); 
-
     if(event.keyCode == 13 || event.wich == 13) {
         var thisTitle = $('input').val();
         callMovie(urlFilm, api_key, thisTitle, film );
@@ -128,7 +127,10 @@ $(document).ready(function() {
     } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
         $('.text-serie').removeClass('active');
         $('.text-film').removeClass('active');
+        $('.container-film-pop').show();
+        $('.container-serie-pop').show();
         }
+    
     });
 
     //DROPDOWN
@@ -138,11 +140,12 @@ $(document).ready(function() {
     $('.parent-dropdown').mouseleave(function() {
         $(this).children('.dropdown').removeClass('active');
     });
-  
+    
 }); //fine document.ready
 
 
 //--------------------FUNCTION-----------------------
+
 
 /////////CALL FILM 
 function callFilm (url, api_key, append) {
@@ -298,6 +301,8 @@ function printCast (array) {
 function clean () {
     $('#film').text('');
     $('#serie').text('');
+    $('.container-film-pop').hide();
+    $('.container-serie-pop').hide();
 }
 
 /////PRINT STAR IN HOVER CONTAINER-CARD

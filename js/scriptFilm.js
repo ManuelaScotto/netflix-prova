@@ -33,7 +33,7 @@ $(document).ready(function() {
 
     //////CALL TRENDING FILM TODAY
     callFilm(urlTrendingFilm, api_key);
-    
+
     ///// CLICK INFO 
     $(document).on('click', '.button-info', function () {
         var thisInfo = $(this).parent().parent().parent().prev('.container-info-big');
@@ -117,6 +117,7 @@ $(document).ready(function() {
             $('input').val('');
         } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
             $('.text-film').removeClass('active');
+            $('.container-film-pop').show();
         }
     });
 
@@ -226,6 +227,7 @@ function printFilm(array, append) {
 function clean() {
     $('#film').text('');
     $('#serie').text('');
+    $('.container-film-pop').hide();
 }
 
 /////PRINT STAR IN HOVER CONTAINER-CARD

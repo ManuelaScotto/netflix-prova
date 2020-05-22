@@ -37,10 +37,10 @@
             <a class="line-height" href="">Sfoglia</a><i class="fas fa-sort-down"></i>
             <div class="dropdown">
               <ul>
-                <li><a href="" class="active">Home</a></li>
-                <li><a href="">Serie Tv</a></li>
-                <li><a href="">Film</a></li>
-                <li><a href="">Nuovi arrivi</a></li>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="indexSerie.html">Serie Tv</a></li>
+                <li><a href="indexFilm.html">Film</a></li>
+                <li><a href="indexLast.html">Nuovi arrivi</a></li>
                 <li><a href="">La mia lista</a></li>
               </ul>
             </div>
@@ -81,28 +81,28 @@
     </div>
 
     <!-- MAIN -->
-    <div class="main"> 
-      <div class="container container-film">
-        <div class="container-flex">
-          <h1 class="text-film">Film</h1>
+      <div class="main"> 
+        <div class="container container-film-pop">
+          <div class="container-flex">
+            <h1>I film più popolari</h1>
+          </div>      
+          <div id="film-popular"> </div>
         </div>
-        <div id="film"> </div>
+        <div class="container container-serie-pop">
+          <h1>Le serie Tv più popolari</h1>
+          <div id="serie-popular"> </div>
+        </div>
+        <div class="container container-film">
+          <div class="container-flex">
+            <h1 class="text-film">Film</h1>
+          </div>
+          <div id="film"> </div>
+        </div>
+        <div class="container container-serie">
+          <h1 class="text-serie">Serie Tv</h1>
+          <div id="serie"></div>
+        </div>
       </div>
-      <div class="container container-serie">
-        <h1 class="text-serie">Serie Tv</h1>
-        <div id="serie"></div>
-      </div>
-      <div class="container container-film-pop">
-        <div class="container-flex">
-          <h1>I film più popolari</h1>
-        </div>      
-        <div id="film-popular"> </div>
-      </div>
-      <div class="container container-serie-pop">
-        <h1>Le serie Tv più popolari</h1>
-        <div id="serie-popular"> </div>
-      </div>
-    </div>
 
     
     <script id="entry-template" type="text/x-handlebars-template">

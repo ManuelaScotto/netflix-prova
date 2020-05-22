@@ -120,6 +120,7 @@ $(document).ready(function () {
         } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
             $('.text-serie').removeClass('active');
             $('.text-film').removeClass('active');
+            $('.container-film-pop').show();
         }
     });
 
@@ -256,6 +257,7 @@ function printFilm(array, append, type) {
 function clean() {
     $('#film').text('');
     $('#serie').text('');
+    $('.container-film-pop').hide();
 }
 
 /////PRINT STAR IN HOVER CONTAINER-CARD
