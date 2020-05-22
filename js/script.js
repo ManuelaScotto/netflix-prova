@@ -32,6 +32,83 @@ $(document).ready(function() {
     var urlFilm = url + '/search/movie';
     var urlSerie = url + '/search/tv';
 
+    // CLICK INFO 
+    $(document).on('click', '.button-info', function(){ 
+        var thisInfo = $(this).parent().parent().parent().prev('.container-info-big');
+        $(this).parent().parent().parent().prev('.container-info-big').addClass('active');
+        var id = thisInfo.attr('data-id');
+       
+        
+    //    var genre = thisInfo.attr('data-genre'); 
+        var urlCast = 'https://api.themoviedb.org/3/movie/' + id + '/credits';
+        // var urlGenre = 'https://api.themoviedb.org/3/genre/movie/list'
+        var urlGenreFilm = url + '/movie/' + id;
+        var urlGenreSerie = url + '/tv/' + id;
+        $.ajax({
+        url: urlCast,
+        method: 'GET',
+        data: {
+            'api_key': api_key,
+            'language': 'it-IT'
+        },
+        success: function (data) {
+            var risultatoCast = data.cast;
+            var dataid = data.id;   
+                 
+            if (dataid == id) {
+                for (var i= 0; i < 5; i++) {
+                    var source = $("#cast-template").html();
+                    var template = Handlebars.compile(source);   
+                    var cast = risultatoCast[i];              
+                    castName = cast.name;                    
+                    var context = {
+                        namecast: castName,
+                        // genre: film.genres,
+                    }
+
+                var html = template(context);
+                
+                thisInfo.find(".cast").append(html);
+              }
+            }
+        },
+            error: function (richesta, stato, errori) {
+                console.log('errore ' + errori);
+            }
+    }) ;
+        $.ajax({
+            url: url + '/movie/' + id,
+            method: 'GET',
+            data: {
+                'api_key': api_key,
+                'language': 'it-IT'
+            },
+            success: function (data) {
+                var genres = data.genres;
+                for (var key of genres) {
+                    var source = $("#cast-template").html();
+                    var template = Handlebars.compile(source);
+                    var context = { 
+                        genre: key.name,
+                    }
+
+                    var html = template(context);
+
+                    thisInfo.find(".genre").append(html);
+                    console.log(key.name);                   
+                }
+                
+            },
+            error: function (richesta, stato, errori) {
+                console.log('errore ' + errori);
+            }
+        });
+    
+    });
+    $(document).on('click', '.close', function () {
+        $(this).parent().removeClass('active');
+       
+    });
     
     // FILM POPOLARI
     callFilmPop (urlFilmPop, api_key, 'filmPop');
@@ -41,12 +118,14 @@ $(document).ready(function() {
     $(document).on('keyup', 'input', function() {       
     var thisTitle = $(this).val();
     callMovie(urlFilm, api_key, thisTitle, film );
-    callMovie(urlSerie, api_key, thisTitle, serie );   
+    callMovie(urlSerie, api_key, thisTitle, serie ); 
+    // callCast (urlCast, api_key);  
     clean(); 
     if(event.keyCode == 13 || event.wich == 13) {
         var thisTitle = $('input').val();
         callMovie(urlFilm, api_key, thisTitle, film );
         callMovie(urlSerie, api_key, thisTitle, serie );  
+        // callCast (urlCast, api_key);  
         clean();
         $('input').val(''); 
     } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
@@ -63,11 +142,20 @@ $(document).ready(function() {
         $(this).children('.dropdown').removeClass('active');
     });
 
+    
+    
+  
 }); //fine document.ready
 
 
 //--------------------FUNCTION-----------------------
 
+
+function scrollMessage() {
+    var heightContainer = $('.main.active').height();
+    console.log(heightContainer);//per controllare l'altezza del container in base al contenuto
+    $('.wrapper-main').scrollTop(heightContainer); //gli stiamo dicendo di andare a scrollare dove è indicato con l'height
+}
 function callFilmPop (url, api_key, append) {
     $.ajax ({
         url: url,
@@ -124,7 +212,7 @@ function callMovie (url, api_key, val, text) {
     })  
 }
 
-function printFilm(array, append, type, api_key) {
+function printFilm(array, append, type ) {
     for (var i= 0; i < array.length; i++) {
         var source = $("#entry-template").html();
         var template = Handlebars.compile(source);    
@@ -132,9 +220,7 @@ function printFilm(array, append, type, api_key) {
         var vote =  Math.ceil(film.vote_average)/2;
         var title;
         var original_title; 
-      
-        var id = film.id;
-        var urlCast =  'https://api.themoviedb.org/3/movie/' + id + '/credits';
+        var num = i;
         // console.log(id);
       
         if (type == 'film') {
@@ -162,61 +248,111 @@ function printFilm(array, append, type, api_key) {
         } else {
             image = '<img src="' + urlBaseImage + film.poster_path + '" alt="'+ title + '"></img>';
         }
-   
+        
+        var imgBig;
+        var urlBaseImageBig = 'https://image.tmdb.org/t/p/w342';
+        if (film.poster_path == null) {
+            imgBig = '<img src="img/unnamed.png" alt="' + title + '"></img>';
+        } else {
+            imgBig = '<img src="' + urlBaseImageBig + film.poster_path + '" alt="' + title + '"></img>';
+        }
+
         var context = { 
             title: title,
             img: image,
+            imgBig: imgBig,
             original_title: original_title,
             lang: printFlag (film.original_language),
             overview: film.overview,
             vote_average: vote,
             star: printStar (vote),
-            cast: callCast (urlCast, api_key)
-         };
-
-    
+            id: film.id,
+            num
+         };          
+        
+         
         var html = template(context);     
         append.append(html); 
+        //  if (num <= 10) {
+        //      console.log(num);
+        //      $('.container-card').removeClass('none');
+        //      $('.container-card').removeClass('second_group'); 
+        //     $('.container-card').addClass('first_group');
+        // }
     }
 }
 
-function callCast (url, api_key) {
-    $.ajax ({
-        url: url,
-        method: 'GET',
-        data: {
-            'api_key': api_key,
-            'language': 'it-IT'
-        },
-        success: function (data) {
-            console.log(data.cast);
-            printCast (data.cast);
+// function callCast (url, api_key, id, thisInfo) {
+//     $.ajax ({
+//         url: url,
+//         method: 'GET',
+//         data: {
+//             'api_key': api_key,
+//             'language': 'it-IT'
+//         },
+//         success: function (data) {
+//             var risultatoCast = data.cast;
+//             var dataid = data.id;
+//             if (dataid == id) {
+//                 for (var i= 0; i < 5; i++) {
+//                     var cast = risultatoCast[i];              
+//                     castName = cast.name;
+//                     var source = $("#cast-template").html();
+//                     var template = Handlebars.compile(source);    
+//                     var context = {
+//                         cast: castName
+//                     }
+//             //   var source = $(".cast").html();
+//             //   var template = Handlebars.compile(source);
+    
+//             //   for (var e = 0; e < risultatoCast.length; e++) {
+//             //     var castSingolo = risultatoCast[e];
+    
+//             //     var context = {
+//             //       cast: castSingolo.name,
+//             //     };
+//                 var html = template(context);
+//                 thisInfo.find(".container-info-big-text").append(html);
+//                 console.log(castName);
+                
+//               }
+//             }
+    
+         
+//             // console.log(cast);
+//             // printCast (cast);
 
-        },
-        error: function (richesta, stato, errori) {
-            console.log('errore ' + errori);          
-        }
+//         },
+//         error: function (richesta, stato, errori) {
+//             console.log('errore ' + errori);          
+//         }
 
-    })
-}
+//     })
+// }
 
-function printCast (array, append) {
+function printCast (array) {
+    var castName = '';
     for (var i= 0; i < 5; i++) {
         var cast = array[i];              
-        var castName = cast.name;
+        castName = cast.name;
         console.log(castName);
-        
-
-        if (append == 'film') {
-            append = $('#film');
-        } else if (append == 'filmPop') {
-            append = $('#film-popular'); 
-        } else if (append == 'serie') {
-            append = $('#serie');
-        } else if (append == 'seriePop') {
-            append = $('#serie-popular'); 
+        var source = $("#cast-template").html();
+        var template = Handlebars.compile(source);    
+        var context = {
+            cast: castName
         }
-        } return castName;
+        var html = template(context);     
+        $('.cast').append(html); 
+        // if (append == 'film') {
+        //     append = $('#film');
+        // } else if (append == 'filmPop') {
+        //     append = $('#film-popular'); 
+        // } else if (append == 'serie') {
+        //     append = $('#serie');
+        // } else if (append == 'seriePop') {
+        //     append = $('#serie-popular'); 
+        // }
+        }// return castName;
 
 }
 function clean () {
@@ -227,7 +363,7 @@ function printStar (num) {
     var star = '';
     for (var i = 1; i <= 5; i++) {
         if( i <= num ) {
-            star += ' <i class="fas fa-star"></i>'; 
+            star += '<i class="fas fa-star"></i>'; 
         }  else {
             star = star  + '<i class="far fa-star"></i>';
         }

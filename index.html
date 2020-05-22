@@ -83,7 +83,9 @@
     <!-- MAIN -->
     <div class="main"> 
       <div class="container container-film">
-        <h1 class="text-film">Film</h1>
+        <div class="container-flex">
+          <h1 class="text-film">Film</h1>
+        </div>
         <div id="film"> </div>
       </div>
       <div class="container container-serie">
@@ -91,33 +93,86 @@
         <div id="serie"></div>
       </div>
       <div class="container container-film-pop">
-        <h1>I film più popolari</h1>
+        <div class="container-flex">
+          <h1>I film più popolari</h1>
+        </div>      
         <div id="film-popular"> </div>
       </div>
       <div class="container container-serie-pop">
         <h1>Le serie Tv più popolari</h1>
         <div id="serie-popular"> </div>
       </div>
+      <div class="modal-container"></div>
     </div>
 
     
     <script id="entry-template" type="text/x-handlebars-template">
-      <div class="container-card">
+      
+      <div class="container-info-big" data-id="{{id}}" data-genre="{{genre}}">
+        <i class="close far fa-times-circle"></i>
+        <div class="container-info-big-img">
+          <div class="poster">{{{imgBig}}}</div>     
+        </div>
+        <div class="container-info-big-text">
+        <h2 class="title-big">{{title}}</h2>
+          <div class="trama">
+            <h3 class="list">Trama: </h3>
+            <p>{{overview}}</p>
+          </div>
+          <div class="cast-genre">
+            <div class="cast">
+              <h3 class="list">Cast: </h3>
+              <p data-id="{{id}}"></p>
+            </div>
+            <div class="genre">
+              <h3 class="list">Genere: </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-card" data-id="{{id}}">
         <div class="card">{{{img}}}</div>
         <div class="info-card">
-            <ul>
-              <li><strong>Titolo: </strong><small>{{title}}</small> </li>
-                <li><strong>Titolo originale: </strong><small>{{original_title}}</small> </li>
-                <li><strong>Lingua originale: </strong><small>{{{lang}}} </small></li>
-                <li><strong>Voto: </strong><small class="color-star">{{{star}}}</small> </li> 
-                <li><strong>Cast: </strong>{{cast}}</li>
-             </ul>
-             <div class="trama">
-               <p><strong>Trama: </strong><small>{{overview}}</small></p>
-             </div>
-         
-        </div>      
-      </div>        
+            <div class="info-card-flex-top">
+              <ul>
+                <li>{{title}}</li>
+                <li>{{{star}}}</li> 
+                <li>{{{lang}}}</li>
+              </ul>
+            </div>       
+            <div class="info-card-flex-bottom">
+              <li class="button-info"><button>+ info</button></li>
+            </div>
+        </div>   
+        
+      </div>   
+      
       </script>
+    <script id="cast-template" type="text/x-handlebars-template">
+        <p>{{namecast}}</p>
+        <p class="genre-p">{{genre}}</p>
+      </script>
+
+      
+
+    <!-- <script id="info-template" type="text/x-handlebars-template">
+      <div class="container-info-big-img">
+        <div class="poster">{{{img}}}</div>
+        <ul>
+          <li>{{title}}</li>
+          <li><strong>Titolo originale: </strong><small>{{original_title}}</small> </li> 
+          <li class="color-star">{{{star}}}</li>
+          <li>Lingua originale: {{{lang}}}</li>
+        </ul>
+      </div>
+      <div class="container-info-big-text">
+        <div class="trama">
+          <p><strong>Trama: </strong><small>{{overview}}</small></p>
+        </div>
+        <ul>
+          <li class="cast" data-id="{{id}}"></li>
+        </ul>
+      </div>
+      </script> -->
 </body>
 </html>
