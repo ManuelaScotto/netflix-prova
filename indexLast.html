@@ -147,7 +147,9 @@
       
       </script>
     <script id="cast-template" type="text/x-handlebars-template">
-        <p>{{namecast}}</p>
+        {{#each namecast}}
+         <p>{{name}}</p>
+        {{/each}}
         <p class="genre-p">{{genre}}</p>
       </script>
 

@@ -36,7 +36,7 @@ $(document).ready(function () {
         var thisInfo = $(this).parent().parent().parent().prev('.container-info-big');
         $(this).parent().parent().parent().prev('.container-info-big').addClass('active');
         var id = thisInfo.attr('data-id');
-        var urlCast = 'https://api.themoviedb.org/3/movie/' + id + '/credits';
+        var urlCast = 'https://api.themoviedb.org/3/movie/' + id + '/casts';
 
         //CALL AND PRINT CAST
         $.ajax({
@@ -48,20 +48,40 @@ $(document).ready(function () {
             },
             success: function (data) {
                 var risultatoCast = data.cast;
-                var dataid = data.id;
-                if (dataid == id) {
-                    for (var i = 0; i < 5; i++) {
-                        var source = $("#cast-template").html();
-                        var template = Handlebars.compile(source);
-                        var cast = risultatoCast[i];
-                        castName = cast.name;
-                        var context = {
-                            namecast: castName,
-                        }
-                        var html = template(context);
-                        thisInfo.find(".cast").append(html);
+               
+                console.log(risultatoCast);
+                
+                var actors = [];
+                for (const actor of risultatoCast) {               
+                    if (actor.order < 5) {
+                        actors.push(actor);
+                    
+                        
                     }
                 }
+                console.log(actors);
+                
+                var source = $("#cast-template").html();
+                var template = Handlebars.compile(source);
+                var context = {
+                    namecast: actors,
+                }
+                var html = template(context);
+                thisInfo.find(".cast").append(html);
+                // var dataid = data.id;
+                // if (dataid == id) {
+                //     for (var i = 0; i < 5; i++) {
+                        // var source = $("#cast-template").html();
+                        // var template = Handlebars.compile(source);
+                        // var cast = risultatoCast[i];
+                        // castName = cast.name;
+                        // var context = {
+                        //     namecast: castName,
+                        // }
+                        // var html = template(context);
+                        // thisInfo.find(".cast").append(html);
+                    // }
+                // }
             },
             error: function (richesta, stato, errori) {
                 console.log('errore ' + errori);
