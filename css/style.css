@@ -212,8 +212,10 @@ ul.nav-sfoglia {
 }
 
 .main h1 {
-    padding: 50px 0 10px 30px;
+    padding: 50px 0 30px 30px;
     color: white;
+    font-size: 30px;
+    font-weight: 900;
 }
 
 .text-film,
@@ -228,7 +230,10 @@ ul.nav-sfoglia {
 #film,
 #serie,
 #film-popular,
-#serie-popular {
+#serie-popular,
+#film-trending,
+#serie-trending,
+#trending-all {
     display: flex;
     flex-wrap: wrap;
     /* justify-content: center; */

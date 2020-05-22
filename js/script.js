@@ -1,5 +1,5 @@
 $(document).ready(function() { 
-    //SEARCH ANIMATE
+    /////SEARCH ANIMATE
     var click = false;
     $('.icon-search').click(function() {
         if (click == false) {
@@ -24,26 +24,25 @@ $(document).ready(function() {
         }   
     });
 
-    //VARIABILI
+    /////VARIABILI
     var url = 'https://api.themoviedb.org/3';
     var urlFilmPop = url + '/movie/popular';
     var urlSeriePop = url + '/tv/popular';
     var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
     var urlFilm = url + '/search/movie';
     var urlSerie = url + '/search/tv';
+    var urlTrendAll = url + '/trending/all/week';
+    // var urlTrendingFilm = url + '/trending/movie/day';
+    // var urlTrendingSerie = url + '/trending/tv/day';
 
-    // CLICK INFO 
+    ///// CLICK INFO 
     $(document).on('click', '.button-info', function(){ 
         var thisInfo = $(this).parent().parent().parent().prev('.container-info-big');
         $(this).parent().parent().parent().prev('.container-info-big').addClass('active');
-        var id = thisInfo.attr('data-id');
-       
-        
-    //    var genre = thisInfo.attr('data-genre'); 
+        var id = thisInfo.attr('data-id');       
         var urlCast = 'https://api.themoviedb.org/3/movie/' + id + '/credits';
-        // var urlGenre = 'https://api.themoviedb.org/3/genre/movie/list'
-        var urlGenreFilm = url + '/movie/' + id;
-        var urlGenreSerie = url + '/tv/' + id;
+        
+        //CALL AND PRINT CAST
         $.ajax({
         url: urlCast,
         method: 'GET',
@@ -53,8 +52,7 @@ $(document).ready(function() {
         },
         success: function (data) {
             var risultatoCast = data.cast;
-            var dataid = data.id;   
-                 
+            var dataid = data.id;               
             if (dataid == id) {
                 for (var i= 0; i < 5; i++) {
                     var source = $("#cast-template").html();
@@ -63,11 +61,8 @@ $(document).ready(function() {
                     castName = cast.name;                    
                     var context = {
                         namecast: castName,
-                        // genre: film.genres,
                     }
-
-                var html = template(context);
-                
+                var html = template(context);               
                 thisInfo.find(".cast").append(html);
               }
             }
@@ -76,6 +71,8 @@ $(document).ready(function() {
                 console.log('errore ' + errori);
             }
     }) ;
+
+        //CALL AND PRINT GENRE
         $.ajax({
             url: url + '/movie/' + id,
             method: 'GET',
@@ -96,8 +93,7 @@ $(document).ready(function() {
 
                     thisInfo.find(".genre").append(html);
                     console.log(key.name);                   
-                }
-                
+                }               
             },
             error: function (richesta, stato, errori) {
                 console.log('errore ' + errori);
@@ -106,32 +102,33 @@ $(document).ready(function() {
     
     });
     $(document).on('click', '.close', function () {
-        $(this).parent().removeClass('active');
-       
+        $(this).parent().removeClass('active');      
     });
     
-    // FILM POPOLARI
-    callFilmPop (urlFilmPop, api_key, 'filmPop');
-    callFilmPop (urlSeriePop, api_key, 'seriePop');
-    // callCast (urlCastFilm, api_key, 'filmPop' );
-    //SEARCH FILM
+    ///// CALL AND PRINT FILM E SERIE POPOLARI
+    callFilm (urlFilmPop, api_key, 'filmPop');
+    callFilm (urlSeriePop, api_key, 'seriePop');
+    // callFilm(urlTrendAll, api_key, 'trendingAll');
+    // callFilm(urlTrendingFilm, api_key, 'filmDay');
+    // callFilm(urlTrendingSerie, api_key, 'serieDay');
+  
+    ////SEARCH FILM E SERIE
     $(document).on('keyup', 'input', function() {       
     var thisTitle = $(this).val();
     callMovie(urlFilm, api_key, thisTitle, film );
-    callMovie(urlSerie, api_key, thisTitle, serie ); 
-    // callCast (urlCast, api_key);  
+    callMovie(urlSerie, api_key, thisTitle, serie );  
     clean(); 
+
     if(event.keyCode == 13 || event.wich == 13) {
         var thisTitle = $('input').val();
         callMovie(urlFilm, api_key, thisTitle, film );
         callMovie(urlSerie, api_key, thisTitle, serie );  
-        // callCast (urlCast, api_key);  
         clean();
         $('input').val(''); 
     } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
         $('.text-serie').removeClass('active');
         $('.text-film').removeClass('active');
-    }
+        }
     });
 
     //DROPDOWN
@@ -141,22 +138,14 @@ $(document).ready(function() {
     $('.parent-dropdown').mouseleave(function() {
         $(this).children('.dropdown').removeClass('active');
     });
-
-    
-    
   
 }); //fine document.ready
 
 
 //--------------------FUNCTION-----------------------
 
-
-function scrollMessage() {
-    var heightContainer = $('.main.active').height();
-    console.log(heightContainer);//per controllare l'altezza del container in base al contenuto
-    $('.wrapper-main').scrollTop(heightContainer); //gli stiamo dicendo di andare a scrollare dove è indicato con l'height
-}
-function callFilmPop (url, api_key, append) {
+/////////CALL FILM 
+function callFilm (url, api_key, append) {
     $.ajax ({
         url: url,
         method: 'GET',
@@ -166,10 +155,15 @@ function callFilmPop (url, api_key, append) {
         },
         success: function (data) {
             if (append == 'filmPop') {
-                printFilm(data.results, 'filmPop', 'film', api_key);
-           
-            } else {
-                printFilm(data.results, 'seriePop', 'serie', api_key);
+                printFilm(data.results, 'filmPop', 'film');          
+            } else if (append == 'seriePop') {
+                printFilm(data.results, 'seriePop', 'serie');
+            } else if (append == 'filmDay') {
+                printFilm(data.results, 'filmDay', 'film');
+            } else if (append == 'serieDay') {
+                printFilm(data.results, 'serieDay', 'serie')
+            } else if (append == 'trending-all') {
+                printFilm(data.results, 'trendingAll', 'film');
             }
         },
         error: function (richesta, stato, errori) {
@@ -178,6 +172,7 @@ function callFilmPop (url, api_key, append) {
     })  
 } 
 
+////////CALL FILM AND SERIES FROM INPUT
 function callMovie (url, api_key, val, text) {
     $.ajax ({
         url: url ,
@@ -212,6 +207,7 @@ function callMovie (url, api_key, val, text) {
     })  
 }
 
+///////PRINT FILM AND SERIES POPULAR AND FROM SEARCH
 function printFilm(array, append, type ) {
     for (var i= 0; i < array.length; i++) {
         var source = $("#entry-template").html();
@@ -221,7 +217,6 @@ function printFilm(array, append, type ) {
         var title;
         var original_title; 
         var num = i;
-        // console.log(id);
       
         if (type == 'film') {
             title = film.title;
@@ -239,6 +234,12 @@ function printFilm(array, append, type ) {
             append = $('#serie');
         } else if (append == 'seriePop') {
             append = $('#serie-popular'); 
+        } else if (append == 'filmDay') {
+            append = $('#film-trending')
+        } else if (append == 'serieDay' ) {
+            append = $('#serie-trending')
+        } else if (append == 'trendingAll') {
+            append = $('#trending-all')
         };
 
         var image;
@@ -273,63 +274,10 @@ function printFilm(array, append, type ) {
          
         var html = template(context);     
         append.append(html); 
-        //  if (num <= 10) {
-        //      console.log(num);
-        //      $('.container-card').removeClass('none');
-        //      $('.container-card').removeClass('second_group'); 
-        //     $('.container-card').addClass('first_group');
-        // }
     }
 }
 
-// function callCast (url, api_key, id, thisInfo) {
-//     $.ajax ({
-//         url: url,
-//         method: 'GET',
-//         data: {
-//             'api_key': api_key,
-//             'language': 'it-IT'
-//         },
-//         success: function (data) {
-//             var risultatoCast = data.cast;
-//             var dataid = data.id;
-//             if (dataid == id) {
-//                 for (var i= 0; i < 5; i++) {
-//                     var cast = risultatoCast[i];              
-//                     castName = cast.name;
-//                     var source = $("#cast-template").html();
-//                     var template = Handlebars.compile(source);    
-//                     var context = {
-//                         cast: castName
-//                     }
-//             //   var source = $(".cast").html();
-//             //   var template = Handlebars.compile(source);
-    
-//             //   for (var e = 0; e < risultatoCast.length; e++) {
-//             //     var castSingolo = risultatoCast[e];
-    
-//             //     var context = {
-//             //       cast: castSingolo.name,
-//             //     };
-//                 var html = template(context);
-//                 thisInfo.find(".container-info-big-text").append(html);
-//                 console.log(castName);
-                
-//               }
-//             }
-    
-         
-//             // console.log(cast);
-//             // printCast (cast);
-
-//         },
-//         error: function (richesta, stato, errori) {
-//             console.log('errore ' + errori);          
-//         }
-
-//     })
-// }
-
+/////PRINT CAST
 function printCast (array) {
     var castName = '';
     for (var i= 0; i < 5; i++) {
@@ -342,23 +290,17 @@ function printCast (array) {
             cast: castName
         }
         var html = template(context);     
-        $('.cast').append(html); 
-        // if (append == 'film') {
-        //     append = $('#film');
-        // } else if (append == 'filmPop') {
-        //     append = $('#film-popular'); 
-        // } else if (append == 'serie') {
-        //     append = $('#serie');
-        // } else if (append == 'seriePop') {
-        //     append = $('#serie-popular'); 
-        // }
-        }// return castName;
+        $('.cast').append(html);        
+        }  
+};
 
-}
+/////CLEAN HTML BEFORE SEARCH 
 function clean () {
     $('#film').text('');
     $('#serie').text('');
 }
+
+/////PRINT STAR IN HOVER CONTAINER-CARD
 function printStar (num) {
     var star = '';
     for (var i = 1; i <= 5; i++) {
@@ -371,6 +313,7 @@ function printStar (num) {
     return star;   
 }
 
+/////PRINT FLAG IN HOVER CONTAINER-CARD
 function printFlag (language) {
     var flags = ['de', 'en', 'es', 'fr', 'it', 'ja', 'ru'];
     for (var i = 0; i < flags.length; i++) {
