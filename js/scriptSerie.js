@@ -29,7 +29,8 @@ $(document).ready(function () {
     var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
     var urlSerie = url + '/search/tv';
     var urlTrendingSerie = url + '/trending/tv/day';
-    ///// CALL AND PRINT FILM E SERIE POPOLARI
+
+    ///// CALL AND PRINT POPULAR SERIES
     callFilm(urlTrendingSerie, api_key);
 
     ///// CLICK INFO 
@@ -103,7 +104,7 @@ $(document).ready(function () {
     });
 
  
-    ////SEARCH FILM E SERIE
+    ////SEARCH SERIES
     $(document).on('keyup', 'input', function () {
         var thisTitle = $(this).val();
         callMovie(urlSerie, api_key, thisTitle);
@@ -151,7 +152,7 @@ function callFilm(url, api_key) {
     })
 }
 
-////////CALL FILM AND SERIES FROM INPUT
+////////CALL SERIES FROM INPUT
 function callMovie(url, api_key, val) {
     $.ajax({
         url: url,
@@ -176,7 +177,7 @@ function callMovie(url, api_key, val) {
     })
 }
 
-///////PRINT FILM AND SERIES POPULAR AND FROM SEARCH
+///////PRINT POPULAR SERIES AND FROM INPUT
 function printFilm(array, append, type) {
     for (var i = 0; i < array.length; i++) {
         var source = $("#entry-template").html();
@@ -226,7 +227,7 @@ function printFilm(array, append, type) {
 }
 
 
-/////CLEAN HTML BEFORE SEARCH 
+/////CLEAN HTML BEFORE AND AFTER SEARCH 
 function clean() {
     $('#film').text('');
     $('#serie').text('');
@@ -254,10 +255,5 @@ function printFlag(language) {
             var flag = '<img class="flag" src="img/flag_' + language + '.png " alt="">';
         }
     } return flag;
-    // stesso metodo con .includes
-    if (flags.includes(language)) {
-        var flag = 'img/flag_' + language + '.png';
-    }
-    return flag;
 }
 

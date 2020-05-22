@@ -101,7 +101,7 @@ $(document).ready(function () {
         $(this).parent().removeClass('active');
     });
 
-    ///// CALL AND PRINT FILM E SERIE POPOLARI
+    ///// CALL AND PRINT TRENDING FILM AND SERIES
     callFilm(urlTrendAll, api_key, 'trendingAll');
 
     ////SEARCH FILM E SERIE
@@ -114,7 +114,6 @@ $(document).ready(function () {
             var thisTitle = $('input').val();
             callMovie(urlFilm, api_key, thisTitle, film);
             callMovie(urlSerie, api_key, thisTitle, serie);
-            // callCast (urlCast, api_key);  
             clean();
             $('input').val('');
         } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
@@ -137,7 +136,7 @@ $(document).ready(function () {
 
 //--------------------FUNCTION-----------------------
 
-/////////CALL FILM POPULAR
+/////////CALL FILM AND SERIES TRENDING
 function callFilm(url, api_key) {
     $.ajax({
         url: url,
@@ -190,7 +189,7 @@ function callMovie(url, api_key, val, text) {
     })
 }
 
-///////PRINT FILM AND SERIES POPULAR AND FROM SEARCH
+///////PRINT TRENDING FILM AND SERIES AND FROM SEARCH
 function printFilm(array, append, type) {
     for (var i = 0; i < array.length; i++) {
         var source = $("#entry-template").html();
@@ -253,7 +252,7 @@ function printFilm(array, append, type) {
 }
 
 
-/////CLEAN HTML BEFORE SEARCH 
+/////CLEAN HTML BEFORE AND AFTER SEARCH 
 function clean() {
     $('#film').text('');
     $('#serie').text('');
@@ -281,10 +280,5 @@ function printFlag(language) {
             var flag = '<img class="flag" src="img/flag_' + language + '.png " alt="">';
         }
     } return flag;
-    // stesso metodo con .includes
-    if (flags.includes(language)) {
-        var flag = 'img/flag_' + language + '.png';
-    }
-    return flag;
 }
 

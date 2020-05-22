@@ -30,7 +30,6 @@ $(document).ready(function() {
     var urlFilm = url + '/search/movie';
     var urlTrendingFilm = url + '/trending/movie/day';
 
-
     //////CALL TRENDING FILM TODAY
     callFilm(urlTrendingFilm, api_key);
 
@@ -223,7 +222,7 @@ function printFilm(array, append) {
     }
 }
 
-/////CLEAN HTML BEFORE SEARCH 
+/////CLEAN HTML BEFORE AND AFTER SEARCH 
 function clean() {
     $('#film').text('');
     $('#serie').text('');
