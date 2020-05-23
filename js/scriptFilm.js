@@ -1,4 +1,61 @@
 $(document).ready(function() {
+    /////VARIABILI
+    var url = 'https://api.themoviedb.org/3';
+    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
+    var urlFilm = url + '/search/movie';
+    var urlTrendingFilm = url + '/trending/movie/day';
+
+    //////CALL TRENDING FILM TODAY
+    callFilm(urlTrendingFilm, api_key);
+
+    ////SEARCH FILM 
+    $(document).on('keyup', 'input', function () {
+        var thisTitle = $(this).val();
+        callMovie(urlFilm, api_key, thisTitle, film);
+        clean();
+
+        if (event.keyCode == 13 || event.wich == 13) {
+            var thisTitle = $('input').val();
+            callMovie(urlFilm, api_key, thisTitle, film);
+            clean();
+            $('input').val('');
+        } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
+            $('.text-film').removeClass('active');
+            $('.container-film-pop').show();
+        }
+    });
+
+    /////SEARCH BY GENRE 
+    $.ajax({
+        url: url + '/genre/movie/list',
+        method: 'GET',
+        data: {
+            'api_key': api_key,
+            'language': 'it-IT'
+        },
+        success: function (data) {
+            var genre = data.genres;
+            var source = $("#genre-template").html();
+            var template = Handlebars.compile(source);
+            for (var i = 0; i < genre.length; i++) {
+                var context = {
+                    genreId: genre[i].id,
+                    genreName: genre[i].name
+                }
+                var html = template(context);
+                $("select").append(html)
+            }
+        },
+        error: function (richesta, stato, errori) {
+            console.log('errore ' + errori);
+        }
+    });
+    $("select").change(function () {
+        var genre = $("select").val();
+        console.log(genre);
+        searchByGenre(genre);
+    });  
+
     /////SEARCH ANIMATE
     var click = false;
     $('.icon-search').click(function () {
@@ -23,15 +80,6 @@ $(document).ready(function() {
             click = false;
         }
     });
-
-    /////VARIABILI
-    var url = 'https://api.themoviedb.org/3';
-    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
-    var urlFilm = url + '/search/movie';
-    var urlTrendingFilm = url + '/trending/movie/day';
-
-    //////CALL TRENDING FILM TODAY
-    callFilm(urlTrendingFilm, api_key);
 
     ///// CLICK INFO 
     $(document).on('click', '.button-info', function () {
@@ -103,23 +151,6 @@ $(document).ready(function() {
         $(this).parent().removeClass('active');
     });
 
-    ////SEARCH FILM 
-    $(document).on('keyup', 'input', function () {
-        var thisTitle = $(this).val();
-        callMovie(urlFilm, api_key, thisTitle, film);
-        clean();
-
-        if (event.keyCode == 13 || event.wich == 13) {
-            var thisTitle = $('input').val();
-            callMovie(urlFilm, api_key, thisTitle, film);
-            clean();
-            $('input').val('');
-        } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
-            $('.text-film').removeClass('active');
-            $('.container-film-pop').show();
-        }
-    });
-
     //DROPDOWN
     $('.parent-dropdown').mouseenter(function () {
         $(this).children('.dropdown').addClass('active');
@@ -129,6 +160,7 @@ $(document).ready(function() {
     });
 
 }); //fine document.ready
+
 //--------------------FUNCTION-----------------------
 
 ////// CALL FILM TRENDING TODAY
@@ -214,6 +246,7 @@ function printFilm(array, append) {
             vote_average: vote,
             star: printStar(vote),
             id: film.id,
+            genreId: film.genre_ids,
             num
         };
 
@@ -221,6 +254,19 @@ function printFilm(array, append) {
         append.append(html);
     }
 }
+
+//////FILTER BY GENRE
+function searchByGenre(val) {
+    $(".container-card").each(function () {
+        var thisGenre = $(this).attr('data-genre');
+
+        if (!thisGenre.includes(val)) {
+            $(this).hide();
+        } else {
+            $(this).show();
+        }
+    })
+};
 
 /////CLEAN HTML BEFORE AND AFTER SEARCH 
 function clean() {

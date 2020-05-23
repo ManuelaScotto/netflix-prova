@@ -118,6 +118,17 @@ ul.nav-sfoglia {
     background-color: rgba(70, 70, 70, 0.2);
 }
 
+.nav-left select {
+    margin-left: 3px;
+    padding: 3px;
+    color: white;
+    background: transparent;
+}
+
+.nav-left option {
+    color: white;
+    background-color: black;
+}
 /* NAV RIGHT */
 .nav-right {
     display: flex;
@@ -196,7 +207,6 @@ ul.nav-sfoglia {
 }
 
 /* MAIN */
-
 .main {
     width: 100%;
     /* min-height: 100%; */
@@ -239,10 +249,10 @@ ul.nav-sfoglia {
 #trending-all {
     display: flex;
     flex-wrap: wrap;
-    /* justify-content: center; */
     margin: 0 auto;
 }
 
+/* container-info */
 .container-info-big {
     display: none;
     position: fixed;
@@ -328,6 +338,7 @@ ul.nav-sfoglia {
     background-image: linear-gradient(to left bottom, #f08080, #f26b68, #f2544f, #f03a33, #eb1212);
 }
 
+/* container-card */
 .container-card {
     position: relative;
     margin: 20px 10px;
@@ -348,7 +359,6 @@ ul.nav-sfoglia {
 
 .card {
     display: flex;   
-    /* color: white; */
     width: 185px; 
 }
 
@@ -409,6 +419,7 @@ ul.nav-sfoglia {
     color: rgb(189, 189, 62);
 }
 
+
 /* MEDIA QUERY */
  @media screen and (max-width: 886px) {
     .nav {
@@ -462,15 +473,15 @@ ul.nav-sfoglia {
         width: 90%;
     }
     .container-info-big-text p {
-    font-size: 12px;
+        font-size: 12px;
     }
     .cast { 
-    margin-left: 0; 
+        margin-left: 0; 
     }
     .genre > .genre-p {
-    margin-bottom: 5px;
-    padding: 5px;
-    font-size: 10px;
-}
+        margin-bottom: 5px;
+        padding: 5px;
+        font-size: 10px;
+    }
  }
 

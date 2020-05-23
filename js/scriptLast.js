@@ -1,4 +1,33 @@
 $(document).ready(function () {
+    /////VARIABILI
+    var url = 'https://api.themoviedb.org/3';
+    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
+    var urlFilm = url + '/search/movie';
+    var urlSerie = url + '/search/tv';
+    var urlTrendAll = url + '/trending/all/week';
+
+    ///// CALL AND PRINT TRENDING FILM AND SERIES
+    callFilm(urlTrendAll, api_key, 'trendingAll');
+
+    ////SEARCH FILM E SERIE
+    $(document).on('keyup', 'input', function () {
+        var thisTitle = $(this).val();
+        callMovie(urlFilm, api_key, thisTitle, film);
+        callMovie(urlSerie, api_key, thisTitle, serie);
+        clean();
+        if (event.keyCode == 13 || event.wich == 13) {
+            var thisTitle = $('input').val();
+            callMovie(urlFilm, api_key, thisTitle, film);
+            callMovie(urlSerie, api_key, thisTitle, serie);
+            clean();
+            $('input').val('');
+        } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
+            $('.text-serie').removeClass('active');
+            $('.text-film').removeClass('active');
+            $('.container-film-pop').show();
+        }
+    });
+
     /////SEARCH ANIMATE
     var click = false;
     $('.icon-search').click(function () {
@@ -24,13 +53,6 @@ $(document).ready(function () {
         }
     });
 
-    /////VARIABILI
-    var url = 'https://api.themoviedb.org/3';
-    var api_key = 'fc85ade35eb700240ef3f0585fe03d64';
-    var urlFilm = url + '/search/movie';
-    var urlSerie = url + '/search/tv';
-    var urlTrendAll = url + '/trending/all/week';
-
     ///// CLICK INFO 
     $(document).on('click', '.button-info', function () {
         var thisInfo = $(this).parent().parent().parent().prev('.container-info-big');
@@ -54,9 +76,7 @@ $(document).ready(function () {
                 var actors = [];
                 for (const actor of risultatoCast) {               
                     if (actor.order < 5) {
-                        actors.push(actor);
-                    
-                        
+                        actors.push(actor);                      
                     }
                 }
                 console.log(actors);
@@ -68,20 +88,6 @@ $(document).ready(function () {
                 }
                 var html = template(context);
                 thisInfo.find(".cast").append(html);
-                // var dataid = data.id;
-                // if (dataid == id) {
-                //     for (var i = 0; i < 5; i++) {
-                        // var source = $("#cast-template").html();
-                        // var template = Handlebars.compile(source);
-                        // var cast = risultatoCast[i];
-                        // castName = cast.name;
-                        // var context = {
-                        //     namecast: castName,
-                        // }
-                        // var html = template(context);
-                        // thisInfo.find(".cast").append(html);
-                    // }
-                // }
             },
             error: function (richesta, stato, errori) {
                 console.log('errore ' + errori);
@@ -115,32 +121,10 @@ $(document).ready(function () {
                 console.log('errore ' + errori);
             }
         });
-
     });
+
     $(document).on('click', '.close', function () {
         $(this).parent().removeClass('active');
-    });
-
-    ///// CALL AND PRINT TRENDING FILM AND SERIES
-    callFilm(urlTrendAll, api_key, 'trendingAll');
-
-    ////SEARCH FILM E SERIE
-    $(document).on('keyup', 'input', function () {
-        var thisTitle = $(this).val();
-        callMovie(urlFilm, api_key, thisTitle, film);
-        callMovie(urlSerie, api_key, thisTitle, serie);
-        clean();
-        if (event.keyCode == 13 || event.wich == 13) {
-            var thisTitle = $('input').val();
-            callMovie(urlFilm, api_key, thisTitle, film);
-            callMovie(urlSerie, api_key, thisTitle, serie);
-            clean();
-            $('input').val('');
-        } else if (event.keyCode == 8 || event.wich == 8 && thisTitle.lenght < 0) {
-            $('.text-serie').removeClass('active');
-            $('.text-film').removeClass('active');
-            $('.container-film-pop').show();
-        }
     });
 
     //DROPDOWN
@@ -265,12 +249,10 @@ function printFilm(array, append, type) {
             num
         };
 
-
         var html = template(context);
         append.append(html);
     }
 }
-
 
 /////CLEAN HTML BEFORE AND AFTER SEARCH 
 function clean() {

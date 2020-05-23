@@ -30,6 +30,9 @@
           <li><a href="indexFilm.html">Film</a></li>
           <li><a href="indexLast.html">Nuovi arrivi</a></li>
           <li><a href="">La mia lista</a></li>
+          <li><select name="genre" id="genre">
+            <option value="">Genere</option>
+          </select></li>
         </ul>
         <!-- SFOGLIA DROPDOWN -->
         <ul class="nav-sfoglia">
@@ -107,7 +110,7 @@
     
     <script id="entry-template" type="text/x-handlebars-template">
       
-      <div class="container-info-big" data-id="{{id}}" data-genre="{{genre}}">
+      <div class="container-info-big" data-id="{{id}}">
         <i class="close far fa-times-circle"></i>
         <div class="container-info-big-img">
           <div class="poster">{{{imgBig}}}</div>     
@@ -129,7 +132,7 @@
           </div>
         </div>
       </div>
-      <div class="container-card" data-id="{{id}}">
+      <div class="container-card" data-id="{{id}}" data-genre="{{genreId}}" >
         <div class="card">{{{img}}}</div>
         <div class="info-card">
             <div class="info-card-flex-top">
@@ -151,6 +154,11 @@
         <p>{{namecast}}</p>
         <p class="genre-p">{{genre}}</p>
       </script>
+
+    <script id="genre-template" type="text/x-handlebars-template">
+        <option value="{{genreId}}">{{genreName}}</option>
+      </script>
+
 
 </body>
 </html>

@@ -18,141 +18,140 @@
         integrity="sha256-ZafrO8ZXERYO794Tx1hPaAcdcXNZUNmXufXOSe0Hxj8=" crossorigin="anonymous"></script>
     <!-- MYSCRIPT -->
     <script src="js/scriptLast.js"></script>
-    <title>Netflix</title>
+    <title>Netflix nuovi arrivi</title>
 </head>
 
 <body>
-    <div class="nav">
+  <div class="nav">
 
-        <!-- NAV-LEFT -->
-        <div class="nav-left">
-            <img src="img/logo.png" alt="logo">
-            <ul class="nav-menu">
-                <li><a href="index.html" >Home</a></li>
-                <li><a href="indexSerie.html">Serie Tv</a></li>
-                <li><a href="indexFilm.html">Film</a></li>
-                <li><a href="" class="active">Nuovi arrivi</a></li>
-                <li><a href="">La mia lista</a></li>
-            </ul>
-            <!-- SFOGLIA DROPDOWN -->
-            <ul class="nav-sfoglia">
-                <li class="parent-dropdown">
-                    <a class="line-height" href="">Sfoglia</a><i class="fas fa-sort-down"></i>
-                    <div class="dropdown">
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="indexSerie.html">Serie Tv</a></li>
-                            <li><a href="indexFilm.html">Film</a></li>
-                            <li><a href="" class="active">Nuovi arrivi</a></li>
-                            <li><a href="">La mia lista</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- NAV-RIGHT -->
-        <div class="nav-right">
-            <div class="search">
-                <i class="icon-search fas fa-search"></i>
-                <input id="search" type="text" placeholder="Inserisci il titolo">
-            </div>
-            <!-- <i class="fas fa-search"></i> -->
-            <i class="fas fa-gift"></i>
-            <i class="fas fa-bell"></i>
-            <!-- NAV-RIGHT DROPDOWN -->
-            <div class="parent-dropdown">
-                <ul class="line-height">
-                    <li>
-                        <img src="img\koala.png
-            " alt="" sizes="" srcset="">
-                    </li>
-                    <li><i class="fas fa-sort-down"></i></li>
-                </ul>
-                <div class="dropdown">
-                    <ul>
-                        <li><a href=""><img src="img/laptop.png" alt=""> Manuela</a></li>
-                        <li><a href="">Gestisci i profili</a></li>
-                        <div class="line"></div>
-                        <li><a class="font-weight" href="">Account</a></li>
-                        <li><a class="font-weight" href="">Centro Assistenza</a></li>
-                        <li><a class="font-weight" href="">Esci da Netflix</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <!-- NAV-LEFT -->
+    <div class="nav-left">
+      <img src="img/logo.png" alt="logo">
+      <ul class="nav-menu">
+          <li><a href="index.html" >Home</a></li>
+          <li><a href="indexSerie.html">Serie Tv</a></li>
+          <li><a href="indexFilm.html">Film</a></li>
+          <li><a href="" class="active">Nuovi arrivi</a></li>
+          <li><a href="">La mia lista</a></li>
+      </ul>
+      <!-- SFOGLIA DROPDOWN -->
+      <ul class="nav-sfoglia">
+          <li class="parent-dropdown">
+              <a class="line-height" href="">Sfoglia</a><i class="fas fa-sort-down"></i>
+              <div class="dropdown">
+                  <ul>
+                      <li><a href="index.html">Home</a></li>
+                      <li><a href="indexSerie.html">Serie Tv</a></li>
+                      <li><a href="indexFilm.html">Film</a></li>
+                      <li><a href="" class="active">Nuovi arrivi</a></li>
+                      <li><a href="">La mia lista</a></li>
+                  </ul>
+              </div>
+          </li>
+      </ul>
     </div>
 
-    <!-- MAIN -->
-    <div class="main">
-        <div class="container container-film">
-            <div class="container-flex">
-                <h1 class="text-film">Film</h1>
-            </div>
-            <div id="film"> </div>
+    <!-- NAV-RIGHT -->
+    <div class="nav-right">
+      <div class="search">
+        <i class="icon-search fas fa-search"></i>
+        <input id="search" type="text" placeholder="Inserisci il titolo">
+      </div>
+      <i class="fas fa-gift"></i>
+      <i class="fas fa-bell"></i>
+      <!-- NAV-RIGHT DROPDOWN -->
+      <div class="parent-dropdown">
+        <ul class="line-height">
+            <li>
+                <img src="img\koala.png" alt="" sizes="" srcset="">
+            </li>
+            <li><i class="fas fa-sort-down"></i></li>
+        </ul>
+        <div class="dropdown">
+            <ul>
+                <li><a href=""><img src="img/laptop.png" alt=""> Manuela</a></li>
+                <li><a href="">Gestisci i profili</a></li>
+                <div class="line"></div>
+                <li><a class="font-weight" href="">Account</a></li>
+                <li><a class="font-weight" href="">Centro Assistenza</a></li>
+                <li><a class="font-weight" href="">Esci da Netflix</a></li>
+            </ul>
         </div>
-        <div class="container container-serie">
-            <h1 class="text-serie">Serie Tv</h1>
-            <div id="serie"></div>
-        </div>
-        <div class="container container-film-pop">
-            <div class="container-flex">
-                <h1>Nuovi Arrivi</h1>
-            </div>
-            <div id="trending-all"> </div>
-        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="container container-film">
+      <div class="container-flex">
+          <h1 class="text-film">Film</h1>
+      </div>
+      <div id="film"> </div>
+    </div>
+    <div class="container container-serie">
+      <h1 class="text-serie">Serie Tv</h1>
+      <div id="serie"></div>
+    </div>
+    <div class="container container-film-pop">
+      <div class="container-flex">
+          <h1>Nuovi Arrivi</h1>
+      </div>
+      <div id="trending-all"> </div>
+    </div>
+  </div>
 
 
-    <script id="entry-template" type="text/x-handlebars-template">
-
-      <div class="container-info-big" data-id="{{id}}" data-genre="{{genre}}">
-        <i class="close far fa-times-circle"></i>
-        <div class="container-info-big-img">
-          <div class="poster">{{{imgBig}}}</div>     
+  <!-- TEMPLATE -->
+  <script id="entry-template" type="text/x-handlebars-template">
+    <!-- container-info -->
+    <div class="container-info-big" data-id="{{id}}">
+      <i class="close far fa-times-circle"></i>
+      <div class="container-info-big-img">
+        <div class="poster">{{{imgBig}}}</div>     
+      </div>
+      <div class="container-info-big-text">
+      <h2 class="title-big">{{title}}</h2>
+        <div class="trama">
+          <h3 class="list">Trama: </h3>
+          <p>{{overview}}</p>
         </div>
-        <div class="container-info-big-text">
-        <h2 class="title-big">{{title}}</h2>
-          <div class="trama">
-            <h3 class="list">Trama: </h3>
-            <p>{{overview}}</p>
+        <div class="cast-genre">
+          <div class="cast">
+            <h3 class="list">Cast: </h3>
+            <p data-id="{{id}}"></p>
           </div>
-          <div class="cast-genre">
-            <div class="cast">
-              <h3 class="list">Cast: </h3>
-              <p data-id="{{id}}"></p>
-            </div>
-            <div class="genre">
-              <h3 class="list">Genere: </h3>
-            </div>
+          <div class="genre">
+            <h3 class="list">Genere: </h3>
           </div>
         </div>
       </div>
-      <div class="container-card" data-id="{{id}}">
-        <div class="card">{{{img}}}</div>
-        <div class="info-card">
-            <div class="info-card-flex-top">
-              <ul>
-                <li>{{title}}</li>
-                <li>{{{star}}}</li> 
-                <li>{{{lang}}}</li>
-              </ul>
-            </div>       
-            <div class="info-card-flex-bottom">
-              <li class="button-info"><button>+ info</button></li>
-            </div>
-        </div>   
-        
-      </div>   
-      
-      </script>
-    <script id="cast-template" type="text/x-handlebars-template">
-        {{#each namecast}}
-         <p>{{name}}</p>
-        {{/each}}
-        <p class="genre-p">{{genre}}</p>
-      </script>
+    </div>
+    <!-- container-card -->
+    <div class="container-card" data-id="{{id}}">
+      <div class="card">{{{img}}}</div>
+      <div class="info-card">
+          <div class="info-card-flex-top">
+            <ul>
+              <li>{{title}}</li>
+              <li>{{{star}}}</li> 
+              <li>{{{lang}}}</li>
+            </ul>
+          </div>       
+          <div class="info-card-flex-bottom">
+            <li class="button-info"><button>+ info</button></li>
+          </div>
+      </div>           
+    </div>   
+  </script>
 
+    <!-- CAST -->
+  <script id="cast-template" type="text/x-handlebars-template">
+    {{#each namecast}}
+      <p>{{name}}</p>
+    {{/each}}
+    <p class="genre-p">{{genre}}</p>
+  </script>
+  
 </body>
-
 </html>
