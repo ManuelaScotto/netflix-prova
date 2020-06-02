@@ -159,6 +159,55 @@ $(document).ready(function() {
         searchByGenre(genre);       
     });  
 
+    // SLIDER 
+    $.ajax({
+        url: 'https://api.themoviedb.org/3/movie/upcoming',
+        method: 'GET',
+        data: {
+            'api_key': api_key,
+            'language': 'it-IT'
+        },
+        success: function (data) {
+            var prova = data.results;
+            for (var i = 0; i < prova.length; i++) {
+                var source = $("#carousel-template").html();
+                var template = Handlebars.compile(source);
+                var film = prova[i];
+                var vote = Math.ceil(film.vote_average) / 2;
+                var urlBaseImage = 'https://image.tmdb.org/t/p/w1280';
+                var image = '<img src="' + urlBaseImage + film.backdrop_path + '" alt=""></img>';
+
+                var context = {
+                    title: film.title,
+                    img: image,
+                    overview: film.overview,
+                    star: printStar(vote),
+                    id: film.id,
+                };
+
+                var html = template(context);
+                $('.swiper-wrapper').append(html);
+
+                var swiper = new Swiper('.swiper-container', {
+                    speed: 800,
+                    parallax: true,
+                    effect: 'fade',
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                });
+            }
+        },
+        error: function (richesta, stato, errori) {
+            console.log('errore ' + errori);
+        }
+    });
+
     //DROPDOWN
     $('.parent-dropdown').mouseenter(function() {
         $(this).children('.dropdown').addClass('active');
@@ -206,7 +255,8 @@ function callMovie (url, api_key, val, text) {
         },
         success: function (data) {
             if (text == film) {
-                $('.text-film').removeClass('active');  
+                $('.text-film').removeClass('active'); 
+                $('.swiper-container').hide(); 
                 if (data.total_results < 1 ) {
                     $('.text-film').text('Non ci sono risultati per i film cercati').addClass('active');
                  } else if (data.total_results > 0){                 
@@ -215,6 +265,7 @@ function callMovie (url, api_key, val, text) {
                     }
             } else if (text == serie) {
                 $('.text-serie').removeClass('active');
+                $('.swiper-container').hide();
                 if (data.total_results < 1 ) {
                     $('.text-serie').text('Non ci sono risultati per le serie cercate').addClass('active');
                  } else if (data.total_results > 0){
@@ -319,6 +370,7 @@ function searchByGenre(val) {
             $(this).hide();
         } else {
             $(this).show();
+            $('.swiper-container').hide();
         }
     })
 };
