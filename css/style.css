@@ -262,7 +262,8 @@ ul.nav-sfoglia {
 
 /* container film */
 .container {
-    margin-left: 50px;
+    margin-left: 30px;
+    margin-right: 10px;
 }
 
 .container-flex {
